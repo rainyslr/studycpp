@@ -1,29 +1,3 @@
-//#include <pthread.h>  
-//#include <stdio.h>  
-//#include <stdlib.h>  
-//#include <unistd.h> 
-//#include <semaphore.h>
-
-//#define N 4   // 消费者或者生产者的数目
-//#define maxbuf 5 // len of buffer
-//#define numbuf 6  //number of buffer in the pool
-//
-//truct buff{
-//	char data[maxbuf];
-//	struct buff* p;
-//};
-//
-//struct buff* head = NULL; //head of the pool
-//struct buff* in = NULL;    // 生产者放置产品的位置
-//struct buff* out = NULL; // 消费者取产品的位置
-//
-//int product_id = 0;   
-//int prochase_id = 0; 
-//
-//long int num = 0;//缓冲池中已经占用的缓冲区数目
-//sem_t empty_sem; // 同步信号量， 当满了时阻止生产者放产品
-//sem_t full_sem;   // 同步信号量， 当没产品时阻止消费者消费
-//pthread_mutex_t mutex; // 互斥信号量， 一次只有一个线程访问缓冲
 
 #include <stdio.h>
 #include <stdlib.h>
