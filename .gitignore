@@ -1,0 +1,9 @@
+build/compile_commands.json
+*.swp
+*~
+*diff
+*.DS_Store
+*._.DS_Store
+*.html
+*.xml
+*.out
