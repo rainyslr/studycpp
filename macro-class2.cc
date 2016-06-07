@@ -45,6 +45,15 @@ CKClassFactory& CKClassFactory::sharedClassFactory()
     return _sharedClassFactory ;  
 }  
 
+class CKDynamicClass  
+{  
+public:  
+    CKDynamicClass(string name, createClass method)  
+    {  
+        CKClassFactory::sharedClassFactory().registClass(name, method) ;  
+    }  
+} ;  
+
 class CKBaseClass  
 {  
 public:  
@@ -54,11 +63,15 @@ public:
     static void* createInstance() {return new CKBaseClass();}  
     // virtual void registProperty() {}  
     virtual void display() {
-      cout << m_content << endl;
+      cout << "CKBaseClass" << endl;
     } 
+    static CKDynamicClass* m_CKBaseClassDc ;//注册类实例，在初始化该类变量时实现CKBaseClass的注册。
     // map<string, setValue> m_propertyMap ;  
     string m_content;
 } ;  
+
+//初始化类变量
+CKDynamicClass* CKBaseClass::m_CKBaseClassDc = new CKDynamicClass("CKBaseClass", CKBaseClass::createInstance) ;  
 
 #define DECLARE_CLASS(name)                                             \
   class name ## Class : public CKBaseClass                              \
@@ -66,6 +79,8 @@ public:
   public:                                                               \
     name ## Class ();                                                   \
     name ## Class (const string& str);                                  \
+    static void* createInstance();                                      \
+    static CKDynamicClass* m_name##ClassDc ;                            \
     virtual void display();                                             \
   };
 
@@ -75,10 +90,13 @@ public:
     : CKBaseClass("default") {}                                         \
   name ## Class::name ## Class (const string& str)                      \
     : CKBaseClass("str") {}                                             \
+  void* name ## Class::createInstance() {                               \
+     return new name ## Class();                                        \
+  }                                                                     \
   void name ## Class::display () {                                      \
     cout << #name << "Class" <<  endl;                                  \
-    CKBaseClass::display();                                             \
-  }        
+  }                                                                     \
+  CKDynamicClass* name ## Class::m_name##ClassDc = new CKDynamicClass(#name"Class", name ## Class::createInstance) ;
 
   class ExampleClass : public  CKBaseClass
   {  
@@ -99,17 +117,29 @@ public:
    {return new ExampleClass();}  
 
 
-  DECLARE_CLASS(first)
-  IMPLEMENT_CLASS(first)
+  // DECLARE_CLASS(first)
+  // IMPLEMENT_CLASS(first)
+  // 不知道为什么，下面这句话不能发在这里，报错：expected function body after function declarator
+  // CKClassFactory::sharedClassFactory().registClass("ExampleClass", ExampleClass::createInstance);
+  DECLARE_CLASS(Second)
+  IMPLEMENT_CLASS(Second)
 
   int main()
   {
-    CKBaseClass* cla = new firstClass;
+    // CKBaseClass* cla = new firstClass;
     // // 
-    CKClassFactory::sharedClassFactory().registClass("ExampleClass", ExampleClass::createInstance);
-    CKBaseClass* cla1 = (CKBaseClass*)CKClassFactory::sharedClassFactory().getClassByName("ExampleClass");
- 
-    cla->display();
-    cla1->display();
+    // CKClassFactory::sharedClassFactory().registClass("ExampleClass", ExampleClass::createInstance);
+    // CKBaseClass* cla1 = (CKBaseClass*)CKClassFactory::sharedClassFactory().getClassByName("ExampleClass");
+    
+
+    // CKBaseClass* cla2 = (CKBaseClass*)CKClassFactory::sharedClassFactory().getClassByName("CKBaseClass");
+
+    // cla->display();
+    // cla1->display();
+    // cla2->display();
+
+
+    CKBaseClass* cla2 = (SecondClass*)CKClassFactory::sharedClassFactory().getClassByName("SecondClass");
+    cla2->display();
     return 0;
   }                                                              
