@@ -74,11 +74,11 @@ public:
 CKDynamicClass* CKBaseClass::m_CKBaseClassDc = new CKDynamicClass("CKBaseClass", CKBaseClass::createInstance) ;  
 
 #define DECLARE_CLASS(name)                                             \
-  class name ## Class : public CKBaseClass                              \
+  class name : public CKBaseClass                                       \
   {                                                                     \
   public:                                                               \
-    name ## Class ();                                                   \
-    name ## Class (const string& str);                                  \
+    name ();                                                            \
+    name (const string& str);                                           \
     static void* createInstance();                                      \
     static CKDynamicClass* m_name##ClassDc ;                            \
     virtual void display();                                             \
@@ -86,60 +86,32 @@ CKDynamicClass* CKBaseClass::m_CKBaseClassDc = new CKDynamicClass("CKBaseClass",
 
 
   #define IMPLEMENT_CLASS(name)                                         \
-  name ## Class::name ## Class ()                                       \
+  name::name ()                                                         \
     : CKBaseClass("default") {}                                         \
-  name ## Class::name ## Class (const string& str)                      \
+  name::name (const string& str)                                        \
     : CKBaseClass("str") {}                                             \
-  void* name ## Class::createInstance() {                               \
-     return new name ## Class();                                        \
+  void* name::createInstance() {                                        \
+     return new name();                                                 \
   }                                                                     \
-  void name ## Class::display () {                                      \
-    cout << #name << "Class" <<  endl;                                  \
+  void name::display () {                                               \
+    cout << "ClassName:" << #name <<  endl;                             \
   }                                                                     \
-  CKDynamicClass* name ## Class::m_name##ClassDc = new CKDynamicClass(#name"Class", name ## Class::createInstance) ;
+  CKDynamicClass* name::m_name##ClassDc = new CKDynamicClass(#name, name::createInstance) ;
 
-  class ExampleClass : public  CKBaseClass
-  {  
-  private:  
-      DECLARE_CLASS(ExampleClass)  
-     
-  public:  
-      ExampleClass() {}  
-      virtual ~ExampleClass() {}  
-      static void* createInstance();
-      virtual void registProperty() {}  
-      virtual void display() {
-        cout << "ExampleClass" << endl;
-      }  
-  } ;  
-
-  void* ExampleClass::createInstance()
-   {return new ExampleClass();}  
-
-
-  // DECLARE_CLASS(first)
-  // IMPLEMENT_CLASS(first)
-  // 不知道为什么，下面这句话不能发在这里，报错：expected function body after function declarator
+  // 不知道为什么，假如有一个类ExampleClass，下面这句话不能放在在这里，报错：expected function body after function declarator
   // CKClassFactory::sharedClassFactory().registClass("ExampleClass", ExampleClass::createInstance);
+
+  DECLARE_CLASS(first)
+  IMPLEMENT_CLASS(first)
+
   DECLARE_CLASS(Second)
   IMPLEMENT_CLASS(Second)
 
   int main()
   {
-    // CKBaseClass* cla = new firstClass;
-    // // 
-    // CKClassFactory::sharedClassFactory().registClass("ExampleClass", ExampleClass::createInstance);
-    // CKBaseClass* cla1 = (CKBaseClass*)CKClassFactory::sharedClassFactory().getClassByName("ExampleClass");
-    
-
-    // CKBaseClass* cla2 = (CKBaseClass*)CKClassFactory::sharedClassFactory().getClassByName("CKBaseClass");
-
-    // cla->display();
-    // cla1->display();
-    // cla2->display();
-
-
-    CKBaseClass* cla2 = (SecondClass*)CKClassFactory::sharedClassFactory().getClassByName("SecondClass");
+    CKBaseClass* cla2 = (Second*)CKClassFactory::sharedClassFactory().getClassByName("Second");
+    cla2->display();
+    cla2 = (CKBaseClass*)CKClassFactory::sharedClassFactory().getClassByName("first");
     cla2->display();
     return 0;
   }                                                              
