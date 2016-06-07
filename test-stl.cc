@@ -39,41 +39,41 @@ void PrintDeque(const deque<int>& deq)
 void PrintStack(stack<int> sta)
 {
 	while (sta.empty() == false) {
-      	cout << sta.top() << " ";
-      	sta.pop();
-      }
-    cout << endl;
+				cout << sta.top() << " ";
+				sta.pop();
+			}
+		cout << endl;
 }
 
 void PrintStackBaseVec(stack<int,vector<int> > sta)
 {
 	while (sta.empty() == false) {
-      	cout << sta.top() << " ";
-      	sta.pop();
-      }
-    cout << endl;
+				cout << sta.top() << " ";
+				sta.pop();
+			}
+		cout << endl;
 }
 
 void PrintQueue(queue<int> que)
 {
 	while (que.empty() == false) {
-      	cout << que.front() << " ";
-      	que.pop();
-      }
-    cout << endl;
+				cout << que.front() << " ";
+				que.pop();
+			}
+		cout << endl;
 }
 
 void TestStack()
 {
 	 const stack<int>::size_type stk_size = 10;
-     stack<int> intStack; // empty stack
-     int ix = 0;
-     while (intStack.size() != stk_size)
-     	intStack.push(ix++); 
-      while (intStack.empty() == false) {
-      	cout << intStack.top() << " ";
-      	intStack.pop();
-      }
+		 stack<int> intStack; // empty stack
+		 int ix = 0;
+		 while (intStack.size() != stk_size)
+			intStack.push(ix++); 
+			while (intStack.empty() == false) {
+				cout << intStack.top() << " ";
+				intStack.pop();
+			}
 }
 
 
@@ -128,16 +128,16 @@ int main()
 
 	// TestStack();
 	const stack<int>::size_type stk_size = 10;
-    stack<int> intStack; // empty stack
-    int ix = 0;
-    while (intStack.size() != stk_size)
-     	intStack.push(ix++); 
-     PrintStack(intStack);
-     stack<int,std::vector<int> > nstack(ivec);//将ivec中从begin开始的元素依次压入栈中。所以最后栈顶元素是2.
-     PrintStackBaseVec(nstack);//stack<int,std::vector<int> > 和stack<int>并不兼容，后者的默认实现用的是dequeue
+		stack<int> intStack; // empty stack
+		int ix = 0;
+		while (intStack.size() != stk_size)
+			intStack.push(ix++); 
+		 PrintStack(intStack);
+		 stack<int,std::vector<int> > nstack(ivec);//将ivec中从begin开始的元素依次压入栈中。所以最后栈顶元素是2.
+		 PrintStackBaseVec(nstack);//stack<int,std::vector<int> > 和stack<int>并不兼容，后者的默认实现用的是dequeue
 
-     queue<int> int_queue(ideq);
-     PrintQueue(int_queue);
+		 queue<int> int_queue(ideq);
+		 PrintQueue(int_queue);
 
 	return 0;
 }
